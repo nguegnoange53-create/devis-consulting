@@ -13,12 +13,18 @@ return new class extends Migration
     public function up(): void
     {
         // 1. CRITICAL: Fix 'migrations' table first so this migration can be recorded!
-        DB::statement('ALTER TABLE migrations MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY');
+        // (Assuming it passed or has no PK issue, keeping as is or simplifying)
+        try {
+            DB::statement('ALTER TABLE migrations MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY');
+        } catch (\Exception $e) {
+            // If PK exists, just add Auto Increment
+            DB::statement('ALTER TABLE migrations MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT');
+        }
 
-        // 2. Fix 'users' table (required for creating new users)
-        DB::statement('ALTER TABLE users MODIFY id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY');
+        // 2. Fix 'users' table (Has PK, just needs Auto Increment)
+        DB::statement('ALTER TABLE users MODIFY id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT');
 
-        // 3. Fix 'clients' table
+        // 3. Fix 'clients' table (Missing PK AND Auto Increment)
         DB::statement('ALTER TABLE clients MODIFY id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY');
     }
 
