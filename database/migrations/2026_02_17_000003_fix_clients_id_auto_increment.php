@@ -12,7 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Force AUTO_INCREMENT and ensure it is a PRIMARY KEY
+        // 1. CRITICAL: Fix 'migrations' table first so this migration can be recorded!
+        DB::statement('ALTER TABLE migrations MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY');
+
+        // 2. Fix 'users' table (required for creating new users)
+        DB::statement('ALTER TABLE users MODIFY id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY');
+
+        // 3. Fix 'clients' table
         DB::statement('ALTER TABLE clients MODIFY id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY');
     }
 
