@@ -10,6 +10,15 @@ use Illuminate\Support\Facades\Route;
 
 // Page d'accueil publique
 
+Route::get('/debug', function () {
+    return [
+        'path' => request()->path(),
+        'url' => request()->url(),
+        'root' => request()->root(),
+        'fullUrl' => request()->fullUrl(),
+    ];
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
