@@ -12,8 +12,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Force AUTO_INCREMENT on the id column
-        DB::statement('ALTER TABLE clients MODIFY id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT');
+        // Force AUTO_INCREMENT and ensure it is a PRIMARY KEY
+        DB::statement('ALTER TABLE clients MODIFY id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY');
     }
 
     /**
