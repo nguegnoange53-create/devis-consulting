@@ -61,9 +61,9 @@
         <tr>
             <td>
                 @if(isset($settings) && $settings->logo)
-                    <img src="{{ asset('storage/' . $settings->logo) }}" class="logo">
+                    <img src="{{ public_path('storage/' . $settings->logo) }}" class="logo">
                 @else
-                    <img src="{{ asset('images/logo-ya.png') }}" class="logo">
+                    <img src="{{ public_path('images/logo-ya.png') }}" class="logo">
                 @endif
             </td>
             <td class="ref-doc">
@@ -93,7 +93,7 @@
             <td style="width: 40%; text-align: right; vertical-align: top;">
                 <p><strong>Destinataire</strong></p>
                 @if(isset($devis->client->logo) && $devis->client->logo)
-                    <img src="{{ asset('storage/' . $devis->client->logo) }}" style="width: 80px; height: auto; margin-bottom: 5px; float: right; clear: both;"><br>
+                    <img src="{{ public_path('storage/' . $devis->client->logo) }}" style="width: 80px; height: auto; margin-bottom: 5px; float: right; clear: both;"><br>
                 @endif
                 <p style="clear: both;"><strong>{{ $devis->client->raison_sociale }}</strong><br>
                 {{ $devis->client->adresse ?? '' }}</p>
@@ -132,7 +132,7 @@
     <div style="margin-top: 30px;">
         <div style="float: left; width: 30%; text-align: center;">
             @if(isset($settings) && $settings->cachet)
-                <img src="{{ asset('storage/' . $settings->cachet) }}" style="width: 150px; opacity: 0.9; margin-top: -20px;">
+                <img src="{{ public_path('storage/' . $settings->cachet) }}" style="width: 150px; opacity: 0.9; margin-top: -20px;">
             @endif
         </div>
         
