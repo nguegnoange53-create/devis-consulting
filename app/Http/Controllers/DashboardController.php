@@ -44,4 +44,41 @@ class DashboardController extends Controller
 
         return view('dashboard', compact('totalDevis', 'totalFactures', 'CA_Prevu', 'CA_Encaisse', 'percentTransformed', 'facturesEnRetard'));
     }
+
+    /**
+     * Force repair database schema (Auto-increment issues)
+     */
+    public function repairDb()
+    {
+        $tables = ['migrations', 'users', 'clients', 'produits', 'documents', 'document_lignes', 'settings'];
+        $results = [];
+
+        foreach ($tables as $table) {
+            try {
+                if ($table === 'migrations') {
+                    \Illuminate\Support\Facades\DB::statement("ALTER TABLE `$table` MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY");
+                } else {
+                    \Illuminate\Support\Facades\DB::statement("ALTER TABLE `$table` MODIFY id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY");
+                }
+                $results[] = "Table `$table`: Repaired (PK + AI)";
+            } catch (\Exception $e) {
+                try {
+                    // Try without Primary Key if it already exists
+                    if ($table === 'migrations') {
+                        \Illuminate\Support\Facades\DB::statement("ALTER TABLE `$table` MODIFY id INT UNSIGNED NOT NULL AUTO_INCREMENT");
+                    } else {
+                        \Illuminate\Support\Facades\DB::statement("ALTER TABLE `$table` MODIFY id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT");
+                    }
+                    $results[] = "Table `$table`: Updated (AI only)";
+                } catch (\Exception $e2) {
+                    $results[] = "Table `$table`: Error - " . $e2->getMessage();
+                }
+            }
+        }
+
+        return response()->json([
+            'message' => 'Database repair attempt completed.',
+            'details' => $results
+        ]);
+    }
 }

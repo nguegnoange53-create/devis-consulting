@@ -44,6 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::post('/facture/{id}/payer', [DevisController::class, 'marquerCommePaye'])->name('facture.payer');
+
+    // Route de réparation temporaire pour cPanel
+    Route::get('/debug/repair-db', [DashboardController::class, 'repairDb'])->name('debug.repair');
 });
 
 require __DIR__.'/auth.php';
